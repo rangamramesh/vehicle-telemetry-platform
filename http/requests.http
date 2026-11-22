@@ -1,0 +1,39 @@
+### Send one reading (IntelliJ HTTP client or VS Code REST Client)
+POST http://localhost:8081/api/v1/telemetry
+Content-Type: application/json
+
+{
+  "vehicleId": "VW-ID4-001",
+  "recordedAt": "{{$isoTimestamp}}",
+  "speedKmh": 87.5,
+  "batteryPercent": 12.0,
+  "batteryTempC": 31.2,
+  "odometerKm": 15230.4,
+  "latitude": 52.5200,
+  "longitude": 13.4050,
+  "dtcCodes": ["P0A80"]
+}
+
+### Invalid reading -> 400 with a list of errors
+POST http://localhost:8081/api/v1/telemetry
+Content-Type: application/json
+
+{
+  "vehicleId": "car 1",
+  "speedKmh": 900
+}
+
+### All vehicles
+GET http://localhost:8083/api/v1/vehicles
+
+### Latest status of one vehicle
+GET http://localhost:8083/api/v1/vehicles/VW-ID4-001/status
+
+### Readings of the last hour
+GET http://localhost:8083/api/v1/vehicles/VW-ID4-001/readings?limit=20
+
+### Critical alerts
+GET http://localhost:8083/api/v1/alerts?severity=CRITICAL
+
+### Health and metrics
+GET http://localhost:8082/actuator/health
